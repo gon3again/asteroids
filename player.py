@@ -15,7 +15,7 @@ class Player(CircleShape):
         super().__init__(x, y, PLAYER_RADIUS)
         self.rotation = 0
         self.shot_timer = 0
-        self.spaceship_img = pygame.transform.flip(pygame.image.load("Spaceship#01(48x48).png"),False,True)
+        self.spaceship_img = pygame.transform.flip(pygame.image.load("sprites/Spaceship#01(48x48).png"),False,True)
         self.rotation_img = 0
 
     def triangle(self):
