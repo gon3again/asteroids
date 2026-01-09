@@ -50,6 +50,8 @@ def main():
                     a.split()
 
         screen.fill("black")
+        bg = pygame.image.load("Bg_Star_1280_720.png")
+        screen.blit(bg,(0,0))
 
         for obj in drawable:
             obj.draw(screen)

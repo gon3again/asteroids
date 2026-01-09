@@ -15,7 +15,8 @@ class Player(CircleShape):
         super().__init__(x, y, PLAYER_RADIUS)
         self.rotation = 0
         self.shot_timer = 0
-    
+        self.spaceship_img = pygame.transform.flip(pygame.image.load("Spaceship#01(48x48).png"),False,True)
+        self.rotation_img = 0
 
     def triangle(self):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
@@ -26,11 +27,20 @@ class Player(CircleShape):
         return [a, b, c]
     
     def draw(self, screen):
-        pygame.draw.polygon(screen, "white", self.triangle(), LINE_WIDTH)
+        #pygame.draw.polygon(screen, "white", self.triangle(), LINE_WIDTH)
+        img = pygame.transform.rotate(self.spaceship_img,self.rotation_img)
+        spaceship_rect = img.get_rect(center =(self.position.x, self.position.y))
+        screen.blit(img,(spaceship_rect))
+        
+        
 
     def rotate(self, dt):
         self.rotation += PLAYER_TURN_SPEED * dt
-        #print(f"self.rotation: {self.rotation}")
+        self.rotation_img -= PLAYER_TURN_SPEED * dt
+
+        #self.scaled_spaceship_img = pygame.transform.rotate(self.scaled_spaceship_img, self.rotation)
+
+        
     
     def update(self, dt):
         self.shot_timer -= dt
