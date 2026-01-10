@@ -5,10 +5,14 @@ from pygame.rect import Rect
 
 
 class Texter():
-    def __init__(self):
-
+    def __init__(self,screen):
+        
         self.font = pygame.font.SysFont(None,30,False,False,)
+        self.screen = screen
+    
 
-    def draw_text(self, text,pos,my_screen):
+
+    def draw_text(self, text,pos):
         img = self.font.render(text,True,"white")
-        my_screen.blit(img ,pos)
+        self.screen.blit(img ,pos)
+

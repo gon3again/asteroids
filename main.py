@@ -27,7 +27,7 @@ def main():
     Shot.containers = (shots,updatable, drawable)
     Asteroid.containers = (asteroids, updatable, drawable)
     AsteroidField.containers = updatable
-    asteroid_field = AsteroidField()
+    asteroid_field = AsteroidField(screen)
     
 
     Player.containers = (updatable, drawable)
@@ -35,10 +35,12 @@ def main():
     player = Player(SCREEN_WIDTH / 2, SCREEN_HEIGHT / 2)
     
     dt = 0
+
+    
     
     while True:
         log_state()
-        
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 return
@@ -56,7 +58,7 @@ def main():
                 if s.collides_with(a):
                     log_event("asteroid_shot")
                     s.kill()
-                    score_change(a.split(),screen)
+                    score_change(a.take_hit(),screen)
                 if s.bullet_out_of_screen():
                     s.kill()
 
@@ -70,13 +72,15 @@ def main():
             obj.draw(screen)
         
 
-        score_text = Texter()
-        score_text.draw_text(f"score: {player_score}",(4,4),screen)
+        score_text = Texter(screen)
+        score_text.draw_text(f"score: {player_score}",(4,4))
         pygame.display.flip()
 
         # limit the framerate to 60 FPS
         dt = clock.tick(60) / 1000
     
+
+
 def score_change(change,screen):
         global player_score
         player_score += change
@@ -84,3 +88,6 @@ def score_change(change,screen):
 
 if __name__ == "__main__":
     main()
+
+
+
