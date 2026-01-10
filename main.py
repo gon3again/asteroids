@@ -12,7 +12,7 @@ from texter import Texter
 player_score = 0
 def main():
     pygame.init()
-    
+    player_is_alive = True
     screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
     clock = pygame.time.Clock()
 
@@ -38,22 +38,16 @@ def main():
 
     
     
-    while True:
+    while player_is_alive:
         log_state()
-
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                return
-            
-        for t in text_grp:
-            obj.update(False)
-
+        check_exit()
+        
         updatable.update(dt)
         for a in asteroids:
             if player.collides_with(a):
                 log_event("player_hit")
                 print("Game over!")
-                sys.exit()
+                player_is_alive = False
             for s in shots:
                 if s.collides_with(a):
                     log_event("asteroid_shot")
@@ -73,17 +67,43 @@ def main():
         
 
         score_text = Texter(screen)
-        score_text.draw_text(f"score: {player_score}",(4,4))
+        score_text.draw_text(f"score: {player_score}",(4,4),30,False)
         pygame.display.flip()
 
         # limit the framerate to 60 FPS
         dt = clock.tick(60) / 1000
+    
+    while not player_is_alive:
+        for event in pygame.event.get():
+            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+                player_is_alive = True
+                main()
+        check_exit()
+
+        
+        # screen.fill("red")
+        t = Texter(screen)
+        t.draw_text("Game Over",(SCREEN_WIDTH/2,SCREEN_HEIGHT/2),100,True)
+        pygame.display.flip()
     
 
 
 def score_change(change,screen):
         global player_score
         player_score += change
+
+def check_exit():
+    keys = pygame.key.get_pressed()
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT or keys[pygame.K_ESCAPE]:
+            print("exit")
+            sys.exit()
+        
+        if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 or keys[pygame.K_r]:
+            #player_is_alive = True
+            main()
+
+    
 
 
 if __name__ == "__main__":

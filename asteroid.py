@@ -36,7 +36,7 @@ class Asteroid(CircleShape):
 
     def draw(self, screen):
         
-        pygame.draw.circle(screen,"white",self.position,self.radius,LINE_WIDTH)
+        #pygame.draw.circle(screen,"white",self.position,self.radius,LINE_WIDTH)
     
         cur_stats = self.asteroid_stats[self.asteroid_size]
         cur_img = cur_stats["image"]
@@ -51,7 +51,7 @@ class Asteroid(CircleShape):
         img = pygame.transform.rotate(cur_scaled_asteroid_img, self.rotation)
         asteroid_rect = img.get_rect(center =(self.position.x, self.position.y))
         screen.blit(img,(asteroid_rect))
-        self.hit_Text.draw_text(f"{self.hits_taken}",self.position)
+        self.hit_Text.draw_text(f"{self.hits_taken}",self.position,30,True)
 
        
 
@@ -77,7 +77,7 @@ class Asteroid(CircleShape):
         return score_to_add
     
     def hit_recently(self):
-        return self.time_since_hit < 0.05
+        return self.time_since_hit < 0.03
         
 
 
