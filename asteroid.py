@@ -6,6 +6,7 @@ from logger import log_event
 
 
 
+
 class Asteroid(CircleShape):
     def __init__(self, x, y ,radius):
         super().__init__(x, y, radius)
@@ -13,26 +14,29 @@ class Asteroid(CircleShape):
         self.asteroid_2_img = pygame.image.load("sprites/asteroid_2(32x32).png")
         self.rotation = 0
         self.rotation_speed = random.uniform(-20,20)
-
-        #self.asteroid_scale_dict = {
-        #    "small": (self.asteroid_2_img, ASTEROID_SMALL_SCALE),
-        #    "medium": (self.asteroid_1_img, ASTEROID_MEDIUM_SCALE),
-        #    "large": (self.asteroid_1_img, ASTEROID_LARGE_SCALE)
-        #    }
+        
+        
+        self.asteroid_stats = {
+           "small": {"image":self.asteroid_2_img,"scale": (64,64),"hits":1},
+           "medium": {"image":self.asteroid_1_img,"scale": (120,120),"hits":2},
+           "large": {"image":self.asteroid_1_img,"scale": (180,180),"hits":3}
+           }
+        self.asteroid_size ,self.asteroid_score = self.check_asteroid_type()
+        self.hits_taken = 0
+        self.req_hits = 100
 
     def draw(self, screen):
         
         pygame.draw.circle(screen,"white",self.position,self.radius,LINE_WIDTH)
-
-        cur_asteroid_img = self.asteroid_1_img
-        if self.radius <= ASTEROID_MIN_RADIUS:
-            cur_asteroid_img = pygame.transform.scale(self.asteroid_2_img, (64,64))
-        elif self.radius >= ASTEROID_MAX_RADIUS:
-            cur_asteroid_img = pygame.transform.scale(self.asteroid_1_img, (180,180))
-        else:
-            cur_asteroid_img = pygame.transform.scale(self.asteroid_1_img, (120,120))
         
-        img = pygame.transform.rotate(cur_asteroid_img, self.rotation)
+        cur_stats = self.asteroid_stats[self.asteroid_size]
+        cur_img = cur_stats["image"]
+        cur_scale = cur_stats["scale"]
+        self.req_hits = cur_stats["hits"]
+        cur_scaled_asteroid_img = pygame.transform.scale(cur_img, cur_scale)
+
+        
+        img = pygame.transform.rotate(cur_scaled_asteroid_img, self.rotation)
         asteroid_rect = img.get_rect(center =(self.position.x, self.position.y))
         screen.blit(img,(asteroid_rect))
 
@@ -45,10 +49,15 @@ class Asteroid(CircleShape):
         self.position += self.velocity * dt
         self.rotation += self.rotation_speed * dt
 
+    def take_hit(self):
+        pass
+
+
     def split(self):
         self.kill()
-        if self.radius <= ASTEROID_MIN_RADIUS:
-            return
+        #player.score_change(self.asteroid_score)
+        if self.asteroid_size == "small": 
+            return self.asteroid_score
         log_event("asteroid_split")
         split_angle = random.uniform(20, 50)
         split_vector_1 = self.velocity.rotate(split_angle)
@@ -57,4 +66,20 @@ class Asteroid(CircleShape):
         split_asteroid_1 = Asteroid(self.position.x, self.position.y, split_radius)
         split_asteroid_1.velocity = split_vector_1 * 1.2
         split_asteroid_2 = Asteroid(self.position.x, self.position.y, split_radius)
-        split_asteroid_2.velocity = split_vector_2 *1.2    
+        split_asteroid_2.velocity = split_vector_2 *1.2 
+        return self.asteroid_score
+
+
+    def check_asteroid_type(self):
+        if self.radius <= ASTEROID_MIN_RADIUS:
+            asteroid_size = "small"
+            asteroid_score = 100
+        elif self.radius >= ASTEROID_MAX_RADIUS:
+            asteroid_size = "large"
+            asteroid_score = 300
+        else:
+            asteroid_size = "medium"
+            asteroid_score = 200
+        return asteroid_size ,asteroid_score
+        
+        

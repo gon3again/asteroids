@@ -10,3 +10,13 @@ class Shot(CircleShape):
         pygame.draw.circle(screen,"white",self.position,self.radius,LINE_WIDTH)
     def update(self, dt):
         self.position += self.velocity * dt
+        print(self.position) 
+        
+            
+
+    def bullet_out_of_screen(self):
+        x = self.position.x
+        y = self.position.y
+        if x < 0 or x > SCREEN_WIDTH or self.position.y < 0 or y > SCREEN_HEIGHT :
+            self.kill()
+        pass

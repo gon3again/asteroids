@@ -8,6 +8,7 @@ from constants import PLAYER_SHOOT_SPEED
 from constants import PLAYER_SHOOT_COOLDOWN_SECONDS
 from circleshape import CircleShape
 from shot import Shot
+#from texter import Texter
 
 
 class Player(CircleShape):
@@ -17,6 +18,7 @@ class Player(CircleShape):
         self.shot_timer = 0
         self.spaceship_img = pygame.transform.flip(pygame.image.load("sprites/Spaceship#01(48x48).png"),False,True)
         self.rotation_img = 0
+        self.player_score = 0
 
     def triangle(self):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
@@ -72,3 +74,8 @@ class Player(CircleShape):
         ##########################
         shot_vec = shot_vec.rotate(self.rotation)
         shot.velocity += PLAYER_SHOOT_SPEED * shot_vec
+
+    def score_change(self, change):
+        player_score += change
+        t = Texter()
+        t.draw_text(f"score: {player_score}",(4,4))
