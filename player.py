@@ -1,5 +1,5 @@
 import pygame
-from constants import PLAYER_RADIUS
+from constants import *
 from constants import LINE_WIDTH
 from constants import PLAYER_TURN_SPEED
 from constants import PLAYER_SPEED
@@ -63,7 +63,17 @@ class Player(CircleShape):
         unit_vector = pygame.Vector2(0, 1)
         rotated_vector = unit_vector.rotate(self.rotation)
         rotated_with_speed_vector = rotated_vector * PLAYER_SPEED * dt
-        self.position += rotated_with_speed_vector
+
+        new_pos_vec: pygame.Vector2 = self.position + rotated_with_speed_vector
+        if new_pos_vec.x < 0:
+            new_pos_vec.x = 0
+        elif new_pos_vec.x > SCREEN_WIDTH:
+            new_pos_vec.x = SCREEN_WIDTH
+        if new_pos_vec.y < 0:
+            new_pos_vec.y = 0
+        elif new_pos_vec.y > SCREEN_HEIGHT:
+            new_pos_vec.y = SCREEN_HEIGHT
+        self.position = new_pos_vec
     
     def shoot(self, dt):
         if self.shot_timer > 0:
@@ -75,7 +85,4 @@ class Player(CircleShape):
         shot_vec = shot_vec.rotate(self.rotation)
         shot.velocity += PLAYER_SHOOT_SPEED * shot_vec
 
-    def score_change(self, change):
-        player_score += change
-        t = Texter()
-        t.draw_text(f"score: {player_score}",(4,4))
+    

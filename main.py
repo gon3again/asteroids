@@ -10,8 +10,10 @@ from texter import Texter
 
 
 player_score = 0
+player_is_alive = True
 def main():
     pygame.init()
+    global player_is_alive
     player_is_alive = True
     global player_score
     player_score = 0
@@ -43,7 +45,7 @@ def main():
     while player_is_alive:
         log_state()
         check_exit()
-        
+        print(asteroids)
         updatable.update(dt)
         for a in asteroids:
             if player.collides_with(a):
@@ -76,10 +78,10 @@ def main():
         dt = clock.tick(60) / 1000
     
     while not player_is_alive:
-        for event in pygame.event.get():
-            if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
-                player_is_alive = True
-                main()
+        # for event in pygame.event.get():
+        #     if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1:
+        #         player_is_alive = True
+        #         main()
         check_exit()
 
         
@@ -102,7 +104,6 @@ def check_exit():
             sys.exit()
         
         if event.type == pygame.MOUSEBUTTONDOWN and event.button == 1 or keys[pygame.K_r]:
-            #player_is_alive = True
             main()
 
     

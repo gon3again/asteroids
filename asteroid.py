@@ -64,6 +64,9 @@ class Asteroid(CircleShape):
         self.time_since_hit += dt
         if not self.hit_recently() and self.hits_taken >= self.req_hits:
             self.split()
+        if self.is_in_killbox():
+            #print(f"kill at: {self.position}")
+            self.kill()
         
 
     def take_hit(self):
@@ -109,5 +112,11 @@ class Asteroid(CircleShape):
             asteroid_size = "medium"
             asteroid_score = 200
         return asteroid_size ,asteroid_score
-        
-        
+    
+    def is_in_killbox(self):
+        offset = ASTEROID_MAX_RADIUS * 2
+        x = self.position.x
+        y = self.position.y
+        if x < 0 - offset or x > SCREEN_WIDTH + offset or y < 0 - offset or y > SCREEN_HEIGHT + offset:
+            return True
+        return False
