@@ -1,11 +1,5 @@
 import pygame
 from constants import *
-from constants import LINE_WIDTH
-from constants import PLAYER_TURN_SPEED
-from constants import PLAYER_SPEED
-from constants import SHOT_RADIUS
-from constants import PLAYER_SHOOT_SPEED
-from constants import PLAYER_SHOOT_COOLDOWN_SECONDS
 from circleshape import CircleShape
 from shot import Shot
 #from texter import Texter
