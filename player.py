@@ -13,6 +13,7 @@ class Player(CircleShape):
         self.spaceship_img = pygame.transform.flip(pygame.image.load("sprites/Spaceship#01(48x48).png"),False,True)
         self.rotation_img = 0
         self.player_score = 0
+        self.has_moved = False
 
     def triangle(self):
         forward = pygame.Vector2(0, 1).rotate(self.rotation)
@@ -68,6 +69,7 @@ class Player(CircleShape):
         elif new_pos_vec.y > SCREEN_HEIGHT:
             new_pos_vec.y = SCREEN_HEIGHT
         self.position = new_pos_vec
+        self.has_moved = True
     
     def shoot(self, dt):
         if self.shot_timer > 0:
@@ -78,5 +80,10 @@ class Player(CircleShape):
         ##########################
         shot_vec = shot_vec.rotate(self.rotation)
         shot.velocity += PLAYER_SHOOT_SPEED * shot_vec
+
+    def player_has_moved(self):
+        return self.has_moved
+
+
 
     
