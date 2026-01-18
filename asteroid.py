@@ -51,7 +51,8 @@ class Asteroid(CircleShape):
         img = pygame.transform.rotate(cur_scaled_asteroid_img, self.rotation)
         asteroid_rect = img.get_rect(center =(self.position.x, self.position.y))
         screen.blit(img,(asteroid_rect))
-        self.hit_Text.draw_text(f"{self.hits_taken}",self.position,30,True)
+        #hit counter for debugging
+        #self.hit_Text.draw_text(f"{self.hits_taken}",self.position,30,True)
 
        
 
